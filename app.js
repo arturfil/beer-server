@@ -53,6 +53,9 @@ app.use('/', index);
 const myBeerRoutes = require('./routes/beer-api-router');
 app.use('/api', myBeerRoutes);
 
+const myAuthRoutes = require('./routes/auth-api-router');
+app.use('/api', myAuthRoutes);
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
