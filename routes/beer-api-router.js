@@ -78,7 +78,42 @@ router.put('/beers/:beerId', (req, res, next) => {
                 image: req.body.beerImage,
                 origin: req.body.beerOrigin,
                 type: req.body.beerType
-            })
+            });
+
+            beerFromDb.save((err) => {
+                if (beerFromDb.errors) {
+                    res.status(400).json({
+                        errorMessage: "Update validation failed 💀",
+                        validationErrors: beerFromDb.errors
+                    });
+                    return;
+                }
+                if (err) {
+                    console.log('Beer Error update', err);
+                    res.status(500).json({ errorMessage: 'Beer update went wrong'});
+                    return;
+                }
+
+                res.status(200).json(beerFromDb);
+            });
+
         }
     )
-})
+});
+
+// DELETE localhost:3000/api/phones/ID
+router.delete('/beers/:beerId', (req, res, next) => {
+    BeerModel.findByIdAndRemove(
+        req.params.beerId,
+        (err, beerFromDb) => {
+            if (err) {
+                console.log('Beer delete Error', err);
+                res.status(500).json({ errorMessage: 'Phone delete went wrong'});
+                return;
+            } 
+            res.status(200).json(BeerFromDb);
+        }
+    );
+});
+
+module.exports = router;
