@@ -116,17 +116,18 @@ router.delete('/beers/:beerId', (req, res, next) => {
     );
 });
 
+// GET/api/mybeers
 router.get('/mybeers', (req, res, next) => {
-    if (!req.user) {
-        res.status(401).json({ errorMessage: 'Not logged in ☠️'});
+    if(!req.user) {
+        res.status(401).json({ errorMessasge: 'Not logged in 💀'});
         return;
     }
     BeerModel.find({ user: req.user._id })
-    .sort({ _id: -1})
+    .sort({ _id: -1 })
     .exec((err, myBeerResults) => {
         if (err) {
             res.status(500).json(
-                {errorMessage: 'My beers went wrong 💀'}
+                {errorMessage: 'My items went wrong 🤠'}
             );
             return;
         }
