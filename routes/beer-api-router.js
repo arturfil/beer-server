@@ -42,7 +42,7 @@ router.post('/beers', (req, res, next) => {
             return;
         }
 
-        res.status(200).json(thePhone);
+        res.status(200).json(theBeer);
     })
 }) //POST / beer
 
@@ -101,19 +101,37 @@ router.put('/beers/:beerId', (req, res, next) => {
     )
 });
 
-// DELETE localhost:3000/api/phones/ID
+// DELETE localhost:3000/api/beers/ID
 router.delete('/beers/:beerId', (req, res, next) => {
     BeerModel.findByIdAndRemove(
         req.params.beerId,
         (err, beerFromDb) => {
             if (err) {
                 console.log('Beer delete Error', err);
-                res.status(500).json({ errorMessage: 'Phone delete went wrong'});
+                res.status(500).json({ errorMessage: 'Beer delete went wrong'});
                 return;
             } 
             res.status(200).json(BeerFromDb);
         }
     );
 });
+
+router.get('/mybeers', (req, res, next) => {
+    if (!req.user) {
+        res.status(401).json({ errorMessage: 'Not logged in ☠️'});
+        return;
+    }
+    BeerModel.find({ user: req.user._id })
+    .sort({ _id: -1})
+    .exec((err, myBeerResults) => {
+        if (err) {
+            res.status(500).json(
+                {errorMessage: 'My beers went wrong 💀'}
+            );
+            return;
+        }
+        res.status(200).json(myBeerResults);
+    })
+})
 
 module.exports = router;
