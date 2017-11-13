@@ -24,7 +24,8 @@ router.post('/beers', (req, res, next) => {
         brewery: req.body.beerBrewery,
         image: req.body.beerImage,
         origin: req.body.beerOrigin,
-        type: req.body.beerType
+        type: req.body.beerType,
+        user: req.user._id
     });
 
     theBeer.save((err) => {
