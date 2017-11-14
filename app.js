@@ -14,7 +14,7 @@ require('./config/passport-config');
 
 require('dotenv').config();
 
-mongoose.connect('mongodb://localhost/beer-server');
+mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 
