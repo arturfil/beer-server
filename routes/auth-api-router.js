@@ -88,8 +88,10 @@ router.post('/process-login', (req, res, next) => {
 })
 
 router.delete('/logout', (req, res, next) => {
+    console.log('requesting passport to log out');
     req.logout();
-    req.status(200).json({ succesMessage: "Log out succes! 🕺🏼"});
+    console.log('about to log out');
+    res.status(200).json({ succesMessage: "Log out succes! 🕺🏼"});
 })
 
 router.get('/checklogin', (req, res, next) => {
