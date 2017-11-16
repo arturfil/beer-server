@@ -87,27 +87,26 @@ router.post('/process-login', (req, res, next) => {
     customAuthCallback(req, res, next);
 })
 
+// delete route for the logout
 router.delete('/logout', (req, res, next) => {
-    console.log('requesting passport to log out');
-    req.logout();
-    console.log('about to log out');
-    res.status(200).json({ succesMessage: "Log out succes! 🕺🏼"});
-})
+  // req.logout is defined by passport
+  req.logout();
+  res.status(200).json({ successMessage: 'Logout success!' });
+});
 
+//get route to check if the user is in session
 router.get('/checklogin', (req, res, next) => {
-    let amILoggedIn = false;
-
-    if (req.user) {
-        req.user.encryptedPassword = undefined;
-        amILoggedIn = true;
+  let amILoggedIn = false;
+  if (req.user) {
+    req.user.encryptedPassword = undefined;
+    amILoggedIn = true;
+  }
+  res.status(200).json(
+    {
+      isLoggedIn: amILoggedIn,
+      userInfo: req.user
     }
-
-    res.status(200).json(
-        {
-            isLoggedIn: amILoggedIn,
-            userInfo: req.user
-        }
-    )
+  );
 });
 
 module.exports = router;
