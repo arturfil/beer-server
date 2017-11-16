@@ -102,17 +102,38 @@ router.put('/beers/:beerId', (req, res, next) => {
     )
 });
 
-// DELETE localhost:3000/api/beers/ID
+// DELETE/api/items/ID
 router.delete('/beers/:beerId', (req, res, next) => {
-    BeerModel.findByIdAndRemove(
+    if (!req.user) {
+        res.status(401).json({ errorMessage: 'Not logged in'});
+        return;
+    }
+    BeerModel.findById(
         req.params.beerId,
         (err, beerFromDb) => {
             if (err) {
-                console.log('Beer delete Error', err);
-                res.status(500).json({ errorMessage: 'Beer delete went wrong'});
+                console.log('Beer owner confirm ERROR', err);
+                res.status(500).json(
+                    { errorMessage: 'Beer owner confirm went wrong'}
+                );
                 return;
-            } 
-            res.status(200).json(BeerFromDb);
+            }
+
+            if (beerFromDb.user.toString() !== req.user._id.toString()) {
+                res.status(403).json({ errorMessage: 'This beer is not yours 👹'});
+                return;
+            }
+
+            BeerModel.findByIdAndRemove(
+                req.params.beerId,
+                (err, beerFromDb) => {
+                    if (err) {
+                        console.log('Beer delete error', err);
+                        res.status(500).json({ errorMessage: 'Beer delete went wrong'});
+                    }
+                    res.status(200).json(beerFromDb);
+                }
+            );
         }
     );
 });
