@@ -49,6 +49,6 @@ else {
 }
 
 module.exports = {
-    ulpoader: myUploader,
+    uploader: myUploader,
     getUrl: getUrl
 }

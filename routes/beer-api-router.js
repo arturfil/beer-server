@@ -1,6 +1,6 @@
 const express   = require('express');
-const BeerModel = require('../models/beer-model');
 const m = require('../config/multer-config');
+const BeerModel = require('../models/beer-model');
 
 const router    = express.Router();
 
