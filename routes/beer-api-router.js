@@ -1,7 +1,5 @@
 const express   = require('express');
-const m = require('../config/multer-config');
 const BeerModel = require('../models/beer-model');
-
 const router    = express.Router();
 
 // Get localhost:3000/api/beer
@@ -20,23 +18,15 @@ router.get('/beers', (req, res, next) => {
 });
 
 //POST localhost:3000/api/beers
-router.post('/beers', m.uploader.single('beerImage'), (req, res, next) => {
-    if(!req.user) {
-        es.status(401).json({ errorMessage: 'Not logged in'});
-        return;
-    }
-
+router.post('/beers', (req, res, next) => {
     const theBeer = new BeerModel({
         name: req.body.beerName,
         brewery: req.body.beerBrewery,
+        image: req.body.beerImage,
         origin: req.body.beerOrigin,
         type: req.body.beerType,
         user: req.user._id
     });
-
-    if (req.file) {
-        theBeer.image = m.getUrl(req);
-    }
 
     theBeer.save((err) => {
         if (theBeer.errors) {
